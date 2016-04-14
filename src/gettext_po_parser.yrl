@@ -16,27 +16,27 @@ translations ->
   comments translation translations : [add_comments_to_translation('$2', '$1')|'$3'].
 
 translation ->
-  msgid strings msgstr strings : {translation, #{
+  msgid strings comments msgstr strings : {translation, #{
     comments       => [],
     msgid          => '$2',
-    msgstr         => '$4',
+    msgstr         => '$5',
     po_source_line => extract_line('$1')
   }}.
 translation ->
-  msgid strings msgid_plural strings pluralizations : {plural_translation, #{
+  msgid strings comments msgid_plural strings comments pluralizations : {plural_translation, #{
     comments       => [],
     msgid          => '$2',
-    msgid_plural   => '$4',
-    msgstr         => plural_forms_map_from_list('$5'),
+    msgid_plural   => '$5',
+    msgstr         => plural_forms_map_from_list('$7'),
     po_source_line => extract_line('$1')
   }}.
 % A bunch of malformed translations.
-translation ->
-  msgid strings :
-    {malformed_translation, extract_line('$1'), <<"missing msgstr">>}.
-translation ->
-  msgid strings msgid_plural strings :
-    {malformed_translation, extract_line('$3'), <<"missing msgstr">>}.
+%% translation ->
+%%   msgid strings :
+%%     {malformed_translation, extract_line('$1'), <<"missing msgstr">>}.
+%% translation ->
+%%   msgid strings msgid_plural strings :
+%%     {malformed_translation, extract_line('$3'), <<"missing msgstr">>}.
 
 pluralizations ->
   pluralization : ['$1'].
