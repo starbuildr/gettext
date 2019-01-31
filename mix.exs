@@ -48,7 +48,9 @@ defmodule Gettext.Mixfile do
 
   defp deps do
     [
-      {:ex_doc, "~> 0.19", only: :dev}
+      {:nimble_parsec, "~> 0.5", override: true},
+      {:benchee, ">= 0.0.0"},
+      {:ex_doc, "~> 0.19", only: :docs}
     ]
   end
 end

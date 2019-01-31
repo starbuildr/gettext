@@ -20,6 +20,24 @@ defmodule Gettext.PO.Parser do
     end
   end
 
+  def parse_nimble(string) do
+    case Gettext.NimbleParser.po_file(string) do
+      {:ok, translations, _, _, _, _} ->
+        translations =
+          Enum.map(translations, fn translation ->
+            translation
+            |> extract_references()
+            |> extract_extracted_comments()
+            |> extract_flags()
+          end)
+
+        with :ok <- check_for_duplicates(translations) do
+          {top_comments, headers, translations} = extract_top_comments_and_headers(translations)
+          {:ok, top_comments, headers, translations}
+        end
+    end
+  end
+
   defp parse_yecc_result(translations) do
     translations = Enum.map(translations, &to_struct/1)
 

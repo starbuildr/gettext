@@ -72,6 +72,21 @@ defmodule Gettext.PO do
     end
   end
 
+  def parse_string_nimble(str) do
+    str = prune_bom(str, "nofile")
+
+    case Parser.parse_nimble(str) do
+      {:ok, top_comments, headers, translations} ->
+        po = %PO{
+          headers: headers,
+          translations: translations,
+          top_of_the_file_comments: top_comments
+        }
+
+        {:ok, po}
+    end
+  end
+
   @doc """
   Parses a string into a `Gettext.PO` struct, raising an exception if there are
   any errors.
