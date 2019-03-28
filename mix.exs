@@ -48,7 +48,7 @@ defmodule Gettext.Mixfile do
 
   defp deps do
     [
-      {:nimble_parsec, "~> 0.5", override: true},
+      {:nimble_parsec, github: "plataformatec/nimble_parsec", override: true},
       {:benchee, ">= 0.0.0"},
       {:ex_doc, "~> 0.19", only: :docs}
     ]

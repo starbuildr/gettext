@@ -10,8 +10,7 @@ defmodule Gettext.NimbleParser.Helpers do
   def strings() do
     optional_whitespace =
       ascii_char([?\s, ?\n, ?\r, ?\t])
-      |> times(min: 1)
-      |> optional()
+      |> times(min: 0)
       |> label("whitespace")
       |> ignore()
 
@@ -70,9 +69,9 @@ defmodule Gettext.NimbleParser.Helpers do
 
   def plural_form() do
     plural_form =
-      ignore(ascii_char([?[]))
+      ignore(string("["))
       |> integer(min: 1)
-      |> ignore(ascii_char([?]]))
+      |> ignore(string("]"))
       |> label("plural form (like [0])")
 
     msgstr_with_plural_form =
@@ -116,7 +115,7 @@ defmodule Gettext.NimbleParser do
 
   defparsec(:strings, strings())
   defparsec(:translation, translation)
-  defparsec(:po_file, times(translation, min: 1))
+  defparsec(:po_file, times(translation, min: 1), inline: true)
 
   defp make_singular_translation(tokens) do
     %Gettext.PO.Translation{
