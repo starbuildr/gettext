@@ -490,8 +490,8 @@ defmodule Gettext.Plural do
 
   # All the `x_Y` languages that have different pluralization rules than `x`.
 
-  def plural("pt_BR", n) when n in [0, 1], do: 0
-  def plural("pt_BR", _n), do: 1
+  def plural(locale, n) when locale in ["pt_BR", "pt-BR"] and n in [0, 1], do: 0
+  def plural(locale, _n) when locale in ["pt_BR", "pt-BR"], do: 1
 
   # Groupable forms.
 
@@ -653,7 +653,7 @@ defmodule Gettext.Plural do
   end
 
   defp recall_if_country_or_raise(locale, fun) do
-    case String.split(locale, "_", parts: 2, trim: true) do
+    case String.split(locale, ["_", "-"], parts: 2, trim: true) do
       [lang, _country] -> fun.(lang)
       _other -> raise UnknownLocaleError, locale
     end

@@ -14,21 +14,27 @@ defmodule Gettext.PluralTest do
     assert plural("pt_BR", 1) == 0
   end
 
+  test "x-* locales are pluralized like x except for exceptions" do
+    assert nplurals("en") == nplurals("en-GB")
+
+    assert plural("pt", 0) == 1
+    assert plural("pt", 1) == 0
+    assert plural("pt-BR", 0) == 0
+    assert plural("pt-BR", 1) == 0
+  end
+
   test "locale with a country" do
     # The _XX in en_XX gets stripped and en_XX is pluralized as en.
     assert nplurals("en_XX") == nplurals("en")
     assert plural("en_XX", 100) == plural("en", 100)
+    assert nplurals("en-XX") == nplurals("en")
+    assert plural("en-XX", 100) == plural("en", 100)
   end
 
   test "unknown locale" do
     message = ~r/unknown locale "wat"/
     assert_raise UnknownLocaleError, message, fn -> nplurals("wat") end
     assert_raise UnknownLocaleError, message, fn -> plural("wat", 1) end
-
-    # This happens with dash as the country/locale separator
-    # (https://en.wikipedia.org/wiki/IETF_language_tag).
-    message = ~r/unknown locale "en-us"/
-    assert_raise UnknownLocaleError, message, fn -> nplurals("en-us") end
   end
 
   test "locales with one form" do
